@@ -46,6 +46,8 @@ public class MainMenuLogic {
                 System.out.println(e.getMessage());
             }catch(NoIDException e){
                 System.out.println(e.getMessage());
+            }catch (NullPointerException e){
+                System.out.println(e.getMessage());
             }
         }while(!option.equals("5"));
 

@@ -39,8 +39,9 @@ public class OrderLogic {
         List<Item> items;
 
         client = pickClient();
-        delivery = pickDeliveryDriver();
         items = pickItemList();
+        delivery = pickDeliveryDriver();
+
 
 
         Order order = new Order(client,delivery,items);
@@ -117,7 +118,7 @@ public class OrderLogic {
         }
     }
     //---------------------DELIVERY--------------------
-    public static void deliverOrder() throws NumberFormatException, NoIDException {
+    public static void deliverOrder() throws NumberFormatException, NoIDException, NullPointerException {
         int id;
         Order o;
 
@@ -129,7 +130,9 @@ public class OrderLogic {
                 .findFirst()
                 .orElse(null);
 
-
+        if(o==null){
+            throw new NoIDException();
+        }
         o.getDelivery().setAvailable(true);
         orders.remove(o);
         deliveredOrders.add(o);
