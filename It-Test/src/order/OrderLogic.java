@@ -1,7 +1,6 @@
 package order;
 
-import exceptions.InvalidMenuOptionException;
-import exceptions.NoClientException;
+import exceptions.*;
 import item.Item;
 import menu.GUI;
 import person.Client;
@@ -31,10 +30,10 @@ public class OrderLogic {
     private static List<Client> clients = List.of(c1,c2,c3,c4,c5);
     private static List<Delivery> deliverers = List.of(d1,d2,d3);
     private static List<Order> orders = new ArrayList<>();
-    private static List<Order> completedOrders = new ArrayList<>();
+    private static List<Order> deliveredOrders = new ArrayList<>();
 
     //---------CREATE AN ORDER------------
-    public static void newOrder()throws NoClientException, InvalidMenuOptionException {
+    public static void newOrder()throws NoClientException, InvalidMenuOptionException, NoFreeDeliveryDriverException, EmptyItemsListException {
         Delivery delivery;
         Client client;
         List<Item> items;
@@ -46,6 +45,7 @@ public class OrderLogic {
 
         Order order = new Order(client,delivery,items);
         orders.add(order);
+        System.out.println("Order completed");
     }
 
     private static Client pickClient() throws NoClientException{
@@ -61,18 +61,24 @@ public class OrderLogic {
         }
         throw new NoClientException();
     }
-    private static Delivery pickDeliveryDriver(){
+    private static Delivery pickDeliveryDriver() throws NoFreeDeliveryDriverException{
+        if (deliverers.stream().allMatch(delivery -> !delivery.isAvailable())) {
+            throw new NoFreeDeliveryDriverException();
+        }
+
         int randomIndex = random.nextInt(deliverers.size());
         boolean free = false;
         do{
             if(deliverers.get(randomIndex).isAvailable()){
                 free = true;
                 deliverers.get(randomIndex).setAvailable(false);
+                return deliverers.get(randomIndex);
             }
-        }while(false);
-        return deliverers.get(randomIndex);
+            randomIndex = random.nextInt(deliverers.size());
+        }while(!free);
+        return null;
     }
-    private static List<Item> pickItemList() throws InvalidMenuOptionException{
+    private static List<Item> pickItemList() throws InvalidMenuOptionException, EmptyItemsListException{
         List<Item> items =new ArrayList<Item>();
         do {
             GUI.itemListMenu();
@@ -88,6 +94,10 @@ public class OrderLogic {
                     throw new InvalidMenuOptionException();
             }
         }while(!option.equals("2"));
+
+        if(items.isEmpty()){
+            throw new EmptyItemsListException();
+        }
         return items;
     }
     private static Item pickItem() throws InvalidMenuOptionException{
@@ -106,6 +116,32 @@ public class OrderLogic {
                 throw new InvalidMenuOptionException();
         }
     }
+    //---------------------DELIVERY--------------------
+    public static void deliverOrder() throws NumberFormatException, NoIDException {
+        int id;
+        Order o;
 
-    //
+        GUI.deliveryMenu();
+        id = Integer.parseInt(sc.nextLine());
+
+        o = orders.stream()
+                .filter(order -> order.getID() == id)
+                .findFirst()
+                .orElse(null);
+
+        o.getDelivery().setAvailable(true);
+        orders.remove(o);
+        deliveredOrders.add(o);
+        System.out.println("Order successfully delivered");
+    }
+//--------------orders list-------------------
+    public static void listOrders(){
+        System.out.println("---------undelivered orders------------");
+        orders.forEach(order -> System.out.println(order));
+    }
+    //--------------Delivered orders list--------------------
+    public static void listDeliveredOrders(){
+        System.out.println("------------delivered orders--------------");
+        deliveredOrders.forEach(order -> System.out.println(order));
+    }
 }

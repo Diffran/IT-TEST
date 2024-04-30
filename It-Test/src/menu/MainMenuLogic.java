@@ -1,7 +1,6 @@
 package menu;
 
-import exceptions.InvalidMenuOptionException;
-import exceptions.NoClientException;
+import exceptions.*;
 import order.OrderLogic;
 
 import java.util.Scanner;
@@ -22,10 +21,13 @@ public class MainMenuLogic {
                         OrderLogic.newOrder();
                         break;
                     case "2":
+                        OrderLogic.deliverOrder();
                         break;
                     case "3":
+                        OrderLogic.listOrders();
                         break;
                     case "4":
+                        OrderLogic.listDeliveredOrders();
                         break;
                     case "5":
                         exit(0);
@@ -35,6 +37,14 @@ public class MainMenuLogic {
             }catch(InvalidMenuOptionException e){
                 System.out.println(e.getMessage());
             }catch(NoClientException e){
+                System.out.println(e.getMessage());
+            }catch(NoFreeDeliveryDriverException e){
+                System.out.println(e.getMessage());
+            }catch(NumberFormatException e){
+                System.out.println("ERROR: "+ e.getMessage());
+            }catch(EmptyItemsListException e){
+                System.out.println(e.getMessage());
+            }catch(NoIDException e){
                 System.out.println(e.getMessage());
             }
         }while(!option.equals("5"));

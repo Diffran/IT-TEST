@@ -44,7 +44,7 @@ public class Order {
 
     @Override
     public String toString(){
-        return "ID: "+ID+" "+client+" "+delivery+" Items:\n"+itemsToString()+"\nTotal: "+price;
+        return "ID: "+ID+"\n"+client+"\n"+delivery+"\nItems:\n"+itemsToString()+"\nTotal: "+price+"\n----------------------------";
     }
 
     //GETTER I SETTER

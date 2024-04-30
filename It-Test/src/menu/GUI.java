@@ -26,4 +26,8 @@ public class GUI {
         System.out.println("3- KEBAB");
         System.out.println("4- PIZZA");
     }
+    public static void deliveryMenu(){
+        System.out.println("----------DELIVERY---------");
+        System.out.println("choose order ID:");
+    }
 }
