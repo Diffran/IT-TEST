@@ -6,6 +6,7 @@ import item.Item;
 import menu.GUI;
 import person.Client;
 import person.Delivery;
+import item.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,16 +38,13 @@ public class OrderLogic {
         Delivery delivery;
         Client client;
         List<Item> items;
-        /**
-         * client = metodo
-         * delivery = metodo
-         * items = metodo
-         */
+
         client = pickClient();
         delivery = pickDeliveryDriver();
+        items = pickItemList();
 
 
-        Order order = new Order();//omplir els valors
+        Order order = new Order(client,delivery,items);
         orders.add(order);
     }
 
@@ -74,7 +72,40 @@ public class OrderLogic {
         }while(false);
         return deliverers.get(randomIndex);
     }
-    private static List<Item> pickItemList(){
-        GUI.itemListMenu();
+    private static List<Item> pickItemList() throws InvalidMenuOptionException{
+        List<Item> items =new ArrayList<Item>();
+        do {
+            GUI.itemListMenu();
+            option = sc.nextLine();
+            switch (option) {
+                case "1":
+                    items.add(pickItem());
+                    option=""; //if option 2 is chosen as an item it will break the loop
+                    break;
+                case "2":
+                    break;
+                default:
+                    throw new InvalidMenuOptionException();
+            }
+        }while(!option.equals("2"));
+        return items;
     }
+    private static Item pickItem() throws InvalidMenuOptionException{
+        GUI.itemMenu();
+        option = sc.nextLine();
+        switch (option) {
+            case "1":
+                return new Burrito();
+            case "2":
+                return new Burger();
+            case "3":
+                return new Kebab();
+            case "4":
+                return new Pizza();
+            default:
+                throw new InvalidMenuOptionException();
+        }
+    }
+
+    //
 }

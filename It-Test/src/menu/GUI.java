@@ -19,4 +19,11 @@ public class GUI {
         System.out.println("1- Choose an item");
         System.out.println("2- Complete Order");
     }
+    public static void itemMenu(){
+        System.out.println("-------------ITEM-------------");
+        System.out.println("1- BURRITO");
+        System.out.println("2- BURGER");
+        System.out.println("3- KEBAB");
+        System.out.println("4- PIZZA");
+    }
 }
