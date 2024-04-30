@@ -10,4 +10,13 @@ public class GUI {
         System.out.println("5- exit");
         System.out.println("Choose an option: ");
     }
+    public static void clientMenu(){
+        System.out.println("----------CLIENT MENU---------");
+        System.out.println("Choose a clients name: ");
+    }
+    public static void itemListMenu(){
+        System.out.println("-----------ITEM LIST----------------");
+        System.out.println("1- Choose an item");
+        System.out.println("2- Complete Order");
+    }
 }

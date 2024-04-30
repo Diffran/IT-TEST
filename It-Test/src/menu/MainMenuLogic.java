@@ -1,6 +1,8 @@
 package menu;
 
 import exceptions.InvalidMenuOptionException;
+import exceptions.NoClientException;
+import order.OrderLogic;
 
 import java.util.Scanner;
 
@@ -17,6 +19,7 @@ public class MainMenuLogic {
 
                 switch (option) {
                     case "1":
+                        OrderLogic.newOrder();
                         break;
                     case "2":
                         break;
@@ -30,6 +33,8 @@ public class MainMenuLogic {
                         throw new InvalidMenuOptionException();
                 }
             }catch(InvalidMenuOptionException e){
+                System.out.println(e.getMessage());
+            }catch(NoClientException e){
                 System.out.println(e.getMessage());
             }
         }while(!option.equals("5"));

@@ -31,6 +31,21 @@ public class Order {
         }
         return price;
     }
+    private String itemsToString(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < items.size(); i++) {
+            stringBuilder.append(items.get(i).toString());
+            if (i < items.size() - 1) {
+                stringBuilder.append("\n");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public String toString(){
+        return "ID: "+ID+" "+client+" "+delivery+" Items:\n"+itemsToString()+"\nTotal: "+price;
+    }
 
     //GETTER I SETTER
     public int getID() {

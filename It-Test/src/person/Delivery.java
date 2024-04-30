@@ -5,7 +5,7 @@ public class Delivery extends Person{
 
     public Delivery(String name) {
         super(name);
-        this.available = false;
+        this.available = true;
     }
 
     public boolean isAvailable() {
