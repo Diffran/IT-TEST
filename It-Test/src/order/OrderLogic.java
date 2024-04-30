@@ -129,6 +129,7 @@ public class OrderLogic {
                 .findFirst()
                 .orElse(null);
 
+
         o.getDelivery().setAvailable(true);
         orders.remove(o);
         deliveredOrders.add(o);
