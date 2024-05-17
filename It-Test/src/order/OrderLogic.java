@@ -37,14 +37,14 @@ public class OrderLogic {
         Delivery delivery;
         Client client;
         List<Item> items;
+        DeliveryType deliveryType;
 
         client = pickClient();
         items = pickItemList();
+        deliveryType = pickDeliveryType();
         delivery = pickDeliveryDriver();
 
-
-
-        Order order = new Order(client,delivery,items);
+        Order order = new Order(client,delivery,items,deliveryType);
         orders.add(order);
         System.out.println("Order completed");
     }
@@ -52,7 +52,9 @@ public class OrderLogic {
     private static Client pickClient() throws NoClientException{
         String name;
 
-        GUI.clientMenu();
+        System.out.println("----------CLIENT MENU---------");
+        System.out.println("Choose a clients name: ");
+
         name = sc.nextLine();
 
         for(Client client : clients){
@@ -82,8 +84,12 @@ public class OrderLogic {
     private static List<Item> pickItemList() throws InvalidMenuOptionException, EmptyItemsListException{
         List<Item> items =new ArrayList<Item>();
         do {
-            GUI.itemListMenu();
+            System.out.println("-----------ITEM LIST----------------");
+            System.out.println("1- Choose an item");
+            System.out.println("2- Complete Order");
+
             option = sc.nextLine();
+
             switch (option) {
                 case "1":
                     items.add(pickItem());
@@ -102,8 +108,14 @@ public class OrderLogic {
         return items;
     }
     private static Item pickItem() throws InvalidMenuOptionException{
-        GUI.itemMenu();
+        System.out.println("-------------ITEM-------------");
+        System.out.println("1- BURRITO");
+        System.out.println("2- BURGER");
+        System.out.println("3- KEBAB");
+        System.out.println("4- PIZZA");
+
         option = sc.nextLine();
+
         switch (option) {
             case "1":
                 return new Burrito();
@@ -117,12 +129,33 @@ public class OrderLogic {
                 throw new InvalidMenuOptionException();
         }
     }
+    private static DeliveryType pickDeliveryType() throws InvalidMenuOptionException{
+        System.out.println("-----------DELIVERY TYPE-----------");
+        System.out.println("1- ON FOOT");
+        System.out.println("2- BICYCLE");
+        System.out.println("3- MOTORCYCLE");
+        System.out.println("choose an option:");
+
+        option = sc.nextLine();
+        switch (option) {
+            case "1":
+                return DeliveryType.ON_FOOT;
+            case "2":
+                return DeliveryType.BICYCLE;
+            case "3":
+                return DeliveryType.MOTORCYCLE;
+            default:
+                throw new InvalidMenuOptionException();
+        }
+    }
     //---------------------DELIVERY--------------------
-    public static void deliverOrder() throws NumberFormatException, NoIDException, NullPointerException {
+    public static void deliverOrder() throws NumberFormatException, OrderIdNotFoundException, NullPointerException {
         int id;
         Order o;
 
-        GUI.deliveryMenu();
+        System.out.println("----------DELIVERY---------");
+        System.out.println("choose order ID:");
+
         id = Integer.parseInt(sc.nextLine());
 
         o = orders.stream()
@@ -131,7 +164,7 @@ public class OrderLogic {
                 .orElse(null);
 
         if(o==null){
-            throw new NoIDException();
+            throw new OrderIdNotFoundException();
         }
         o.getDelivery().setAvailable(true);
         orders.remove(o);

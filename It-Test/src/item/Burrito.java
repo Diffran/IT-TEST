@@ -1,8 +1,9 @@
 package item;
 
 public class Burrito extends Item{
+    private static final double PRICE = 6.5;
     public Burrito() {
-        super(6.5);
+        super(PRICE);
         gift();
     }
 
