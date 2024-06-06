@@ -1,9 +1,9 @@
-package item;
+package product;
 
-public abstract class Item {
+public abstract class Product {
     protected double price;
 
-    public Item(double price) {
+    public Product(double price) {
         this.price = price;
     }
     protected abstract void gift();

@@ -1,11 +1,10 @@
 package order;
 
 import exceptions.*;
-import item.Item;
 import menu.GUI;
 import person.Client;
 import person.Delivery;
-import item.*;
+import product.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +35,15 @@ public class OrderLogic {
     public static void newOrder()throws NoClientException, InvalidMenuOptionException, NoFreeDeliveryDriverException, EmptyItemsListException {
         Delivery delivery;
         Client client;
-        List<Item> items;
+        List<Product> products;
 
         client = pickClient();
-        items = pickItemList();
+        products = pickProductList();
         delivery = pickDeliveryDriver();
 
 
 
-        Order order = new Order(client,delivery,items);
+        Order order = new Order(client,delivery,products);
         orders.add(order);
         System.out.println("Order completed");
     }
@@ -79,14 +78,14 @@ public class OrderLogic {
         }while(!free);
         return null;
     }
-    private static List<Item> pickItemList() throws InvalidMenuOptionException, EmptyItemsListException{
-        List<Item> items =new ArrayList<Item>();
+    private static List<Product> pickProductList() throws InvalidMenuOptionException, EmptyItemsListException{
+        List<Product> products =new ArrayList<Product>();
         do {
             GUI.itemListMenu();
             option = sc.nextLine();
             switch (option) {
                 case "1":
-                    items.add(pickItem());
+                    products.add(pickItem());
                     option=""; //if option 2 is chosen as an item it will break the loop
                     break;
                 case "2":
@@ -96,12 +95,12 @@ public class OrderLogic {
             }
         }while(!option.equals("2"));
 
-        if(items.isEmpty()){
+        if(products.isEmpty()){
             throw new EmptyItemsListException();
         }
-        return items;
+        return products;
     }
-    private static Item pickItem() throws InvalidMenuOptionException{
+    private static Product pickItem() throws InvalidMenuOptionException{
         GUI.itemMenu();
         option = sc.nextLine();
         switch (option) {

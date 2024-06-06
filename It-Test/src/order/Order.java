@@ -1,6 +1,7 @@
 package order;
 
-import item.Item;
+
+import product.Product;
 import person.Client;
 import person.Delivery;
 
@@ -12,30 +13,30 @@ public class Order {
     private final int ID;
     private Client client;
     private Delivery delivery;
-    private List<Item> items = new ArrayList<Item>();
+    private List<Product> products = new ArrayList<Product>();
     private double price;
 //Order falta enum per calcular com va el repartidor
-    public Order(Client client, Delivery delivery, List<Item> items) {
+    public Order(Client client, Delivery delivery, List<Product> product) {
         generalID++;
         this.ID = generalID;
         this.client = client;
         this.delivery = delivery;
-        this.items = items;
+        this.products = products;
         price=finalPrice();
     }
 
     private double finalPrice(){
         double price=0;
-        for(Item item : items){
-            price += item.getPrice();
+        for(Product product : products){
+            price += product.getPrice();
         }
         return price;
     }
     private String itemsToString(){
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < items.size(); i++) {
-            stringBuilder.append(items.get(i).toString());
-            if (i < items.size() - 1) {
+        for (int i = 0; i < products.size(); i++) {
+            stringBuilder.append(products.get(i).toString());
+            if (i < products.size() - 1) {
                 stringBuilder.append("\n");
             }
         }
@@ -68,12 +69,12 @@ public class Order {
         this.delivery = delivery;
     }
 
-    public List<Item> getItems() {
-        return items;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public double getPrice() {

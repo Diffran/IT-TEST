@@ -1,6 +1,6 @@
-package item;
+package product;
 
-public class Kebab extends Item{
+public class Kebab extends Product{
     public Kebab() {
         super(7.9);
     }

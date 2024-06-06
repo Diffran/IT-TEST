@@ -1,6 +1,6 @@
-package item;
+package product;
 
-public class Burrito extends Item{
+public class Burrito extends Product{
     public Burrito() {
         super(6.5);
         gift();
