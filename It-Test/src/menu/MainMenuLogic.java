@@ -13,7 +13,14 @@ public class MainMenuLogic {
     public static void mainMenuLogic(){
         do {
             try {
-                GUI.mainMenu();
+                System.out.println("------------MAIN MENU----------------");
+                System.out.println("1- new order");
+                System.out.println("2- deliver order");
+                System.out.println("3- list not delivered orders");
+                System.out.println("4- list delivered orders");
+                System.out.println("5- exit");
+                System.out.println("Choose an option: ");
+
                 option = sc.nextLine();
 
                 switch (option) {
@@ -34,19 +41,8 @@ public class MainMenuLogic {
                     default:
                         throw new InvalidMenuOptionException();
                 }
-            }catch(InvalidMenuOptionException e){
-                System.out.println(e.getMessage());
-            }catch(NoClientException e){
-                System.out.println(e.getMessage());
-            }catch(NoFreeDeliveryDriverException e){
-                System.out.println(e.getMessage());
-            }catch(NumberFormatException e){
-                System.out.println("ERROR: "+ e.getMessage());
-            }catch(EmptyItemsListException e){
-                System.out.println(e.getMessage());
-            }catch(NoIDException e){
-                System.out.println(e.getMessage());
-            }catch (NullPointerException e){
+            }catch(InvalidMenuOptionException | NoClientException | NoFreeDeliveryDriverException | NumberFormatException |
+                   EmptyProductListException | OrderIdNotFoundException | NullPointerException e){
                 System.out.println(e.getMessage());
             }
         }while(!option.equals("5"));

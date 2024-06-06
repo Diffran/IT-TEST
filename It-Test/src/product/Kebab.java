@@ -1,13 +1,18 @@
 package product;
 
+
 public class Kebab extends Product{
+
+
+    private static final double PRICE = 7.9;
+
     public Kebab() {
-        super(7.9);
+        super(PRICE);
     }
 
     @Override
     protected void gift() {
-
+        System.out.println("No gift with this Item");
     }
 
     @Override

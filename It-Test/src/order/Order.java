@@ -9,30 +9,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
-    private static int generalID=0;
+    private static int lastOrderID;
     private final int ID;
     private Client client;
     private Delivery delivery;
     private List<Product> products = new ArrayList<Product>();
     private double price;
+    private DeliveryType deliveryType;
+
 //Order falta enum per calcular com va el repartidor
-    public Order(Client client, Delivery delivery, List<Product> product) {
-        generalID++;
-        this.ID = generalID;
+    public Order(Client client, Delivery delivery, List<Product> products, DeliveryType deliveryType) {
+        lastOrderID++;
+        this.ID = lastOrderID;
         this.client = client;
         this.delivery = delivery;
         this.products = products;
-        price=finalPrice();
+        price = finalPrice(deliveryType.getVALUE());
     }
 
-    private double finalPrice(){
+
+    private double finalPrice(double deliveryType){
         double price=0;
         for(Product product : products){
             price += product.getPrice();
         }
+        price = price + price*deliveryType;
         return price;
     }
-    private String itemsToString(){
+    private String productsToString(){
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < products.size(); i++) {
             stringBuilder.append(products.get(i).toString());
@@ -45,7 +49,7 @@ public class Order {
 
     @Override
     public String toString(){
-        return "ID: "+ID+"\n"+client+"\n"+delivery+"\nItems:\n"+itemsToString()+"\nTotal: "+price+"\n----------------------------";
+        return "ID: "+ID+"\n"+client+"\n"+delivery+"\nItems:\n"+productsToString()+"\n"+deliveryType+"\nTotal: "+price+"\n----------------------------";
     }
 
     //GETTER I SETTER

@@ -1,7 +1,6 @@
 package order;
 
 import exceptions.*;
-import menu.GUI;
 import person.Client;
 import person.Delivery;
 import product.*;
@@ -32,18 +31,19 @@ public class OrderLogic {
     private static List<Order> deliveredOrders = new ArrayList<>();
 
     //---------CREATE AN ORDER------------
-    public static void newOrder()throws NoClientException, InvalidMenuOptionException, NoFreeDeliveryDriverException, EmptyItemsListException {
+    public static void newOrder()throws NoClientException, InvalidMenuOptionException, NoFreeDeliveryDriverException, EmptyProductListException {
         Delivery delivery;
         Client client;
         List<Product> products;
+        DeliveryType deliveryType;
 
         client = pickClient();
         products = pickProductList();
+        deliveryType = pickDeliveryType();
         delivery = pickDeliveryDriver();
 
+        Order order = new Order(client,delivery,products,deliveryType);
 
-
-        Order order = new Order(client,delivery,products);
         orders.add(order);
         System.out.println("Order completed");
     }
@@ -51,7 +51,9 @@ public class OrderLogic {
     private static Client pickClient() throws NoClientException{
         String name;
 
-        GUI.clientMenu();
+        System.out.println("----------CLIENT MENU---------");
+        System.out.println("Choose a clients name: ");
+
         name = sc.nextLine();
 
         for(Client client : clients){
@@ -78,14 +80,18 @@ public class OrderLogic {
         }while(!free);
         return null;
     }
-    private static List<Product> pickProductList() throws InvalidMenuOptionException, EmptyItemsListException{
+    private static List<Product> pickProductList() throws InvalidMenuOptionException, EmptyProductListException {
         List<Product> products =new ArrayList<Product>();
         do {
-            GUI.itemListMenu();
+            System.out.println("-----------ITEM LIST----------------");
+            System.out.println("1- Choose an item");
+            System.out.println("2- Complete Order");
+
             option = sc.nextLine();
+
             switch (option) {
                 case "1":
-                    products.add(pickItem());
+                    products.add(pickProduct());
                     option=""; //if option 2 is chosen as an item it will break the loop
                     break;
                 case "2":
@@ -96,13 +102,22 @@ public class OrderLogic {
         }while(!option.equals("2"));
 
         if(products.isEmpty()){
-            throw new EmptyItemsListException();
+            throw new EmptyProductListException();
         }
         return products;
     }
-    private static Product pickItem() throws InvalidMenuOptionException{
-        GUI.itemMenu();
+
+    private static Product pickProduct() throws InvalidMenuOptionException{
+
+        System.out.println("-------------ITEM-------------");
+        System.out.println("1- BURRITO");
+        System.out.println("2- BURGER");
+        System.out.println("3- KEBAB");
+        System.out.println("4- PIZZA");
+
+
         option = sc.nextLine();
+
         switch (option) {
             case "1":
                 return new Burrito();
@@ -116,12 +131,33 @@ public class OrderLogic {
                 throw new InvalidMenuOptionException();
         }
     }
+    private static DeliveryType pickDeliveryType() throws InvalidMenuOptionException{
+        System.out.println("-----------DELIVERY TYPE-----------");
+        System.out.println("1- ON FOOT");
+        System.out.println("2- BICYCLE");
+        System.out.println("3- MOTORCYCLE");
+        System.out.println("choose an option:");
+
+        option = sc.nextLine();
+        switch (option) {
+            case "1":
+                return DeliveryType.ON_FOOT;
+            case "2":
+                return DeliveryType.BICYCLE;
+            case "3":
+                return DeliveryType.MOTORCYCLE;
+            default:
+                throw new InvalidMenuOptionException();
+        }
+    }
     //---------------------DELIVERY--------------------
-    public static void deliverOrder() throws NumberFormatException, NoIDException, NullPointerException {
+    public static void deliverOrder() throws NumberFormatException, OrderIdNotFoundException, NullPointerException {
         int id;
         Order o;
 
-        GUI.deliveryMenu();
+        System.out.println("----------DELIVERY---------");
+        System.out.println("choose order ID:");
+
         id = Integer.parseInt(sc.nextLine());
 
         o = orders.stream()
@@ -130,7 +166,7 @@ public class OrderLogic {
                 .orElse(null);
 
         if(o==null){
-            throw new NoIDException();
+            throw new OrderIdNotFoundException();
         }
         o.getDelivery().setAvailable(true);
         orders.remove(o);
