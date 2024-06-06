@@ -7,10 +7,11 @@ import person.Delivery;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Order {
     private static int lastOrderID;
-    private final int ID;
+    private final int IdOrder;
     private Client client;
     private Delivery delivery;
     private List<Product> products = new ArrayList<Product>();
@@ -18,13 +19,13 @@ public class Order {
     private DeliveryType deliveryType;
 
 //Order falta enum per calcular com va el repartidor
-    public Order(Client client, Delivery delivery, List<Product> products, DeliveryType deliveryType) {
+    public Order(Client client, Delivery delivery, List<Product> products) {
         lastOrderID++;
-        this.ID = lastOrderID;
+        this.IdOrder = lastOrderID;
         this.client = client;
         this.delivery = delivery;
         this.products = products;
-        price = finalPrice(deliveryType.getVALUE());
+        price = finalPrice(delivery.getDeliveryType().getVALUE());
     }
 
 
@@ -37,24 +38,20 @@ public class Order {
         return price;
     }
     private String productsToString(){
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < products.size(); i++) {
-            stringBuilder.append(products.get(i).toString());
-            if (i < products.size() - 1) {
-                stringBuilder.append("\n");
-            }
-        }
-        return stringBuilder.toString();
+        return String.join("\n", products.stream()
+                .map(Object::toString)
+                .collect(Collectors.toList()));
     }
 
     @Override
     public String toString(){
-        return "ID: "+ID+"\n"+client+"\n"+delivery+"\nItems:\n"+productsToString()+"\n"+deliveryType+"\nTotal: "+price+"\n----------------------------";
+        return "ID: "+ IdOrder +"\n"+client+"\n"+delivery+"\nItems:\n"+productsToString()+"\n"+deliveryType+"\nTotal: "
+                +price+"\n----------------------------";
     }
 
     //GETTER I SETTER
-    public int getID() {
-        return ID;
+    public int getIdOrder() {
+        return IdOrder;
     }
 
     public Client getClient() {

@@ -21,9 +21,9 @@ public class OrderLogic {
     private static Client c4 = new Client("name4", "address4");
     private static Client c5 = new Client("name5", "address5");
 
-    private static Delivery d1 = new Delivery("Dname1");
-    private static Delivery d2 = new Delivery("Dname2");
-    private static Delivery d3 = new Delivery("Dname3");
+    private static Delivery d1 = new Delivery("Dname1", null);
+    private static Delivery d2 = new Delivery("Dname2", null);
+    private static Delivery d3 = new Delivery("Dname3", null);
 
     private static List<Client> clients = List.of(c1,c2,c3,c4,c5);
     private static List<Delivery> deliverers = List.of(d1,d2,d3);
@@ -31,18 +31,17 @@ public class OrderLogic {
     private static List<Order> deliveredOrders = new ArrayList<>();
 
     //---------CREATE AN ORDER------------
-    public static void newOrder()throws NoClientException, InvalidMenuOptionException, NoFreeDeliveryDriverException, EmptyProductListException {
+    public static void newOrder()throws NoClientException, InvalidMenuOptionException, NoFreeDeliveryDriverException,
+                                    EmptyProductListException {
         Delivery delivery;
         Client client;
         List<Product> products;
-        DeliveryType deliveryType;
 
         client = pickClient();
         products = pickProductList();
-        deliveryType = pickDeliveryType();
         delivery = pickDeliveryDriver();
 
-        Order order = new Order(client,delivery,products,deliveryType);
+        Order order = new Order(client,delivery,products);
 
         orders.add(order);
         System.out.println("Order completed");
@@ -50,6 +49,8 @@ public class OrderLogic {
 
     private static Client pickClient() throws NoClientException{
         String name;
+
+        printClientList();
 
         System.out.println("----------CLIENT MENU---------");
         System.out.println("Choose a clients name: ");
@@ -63,7 +64,12 @@ public class OrderLogic {
         }
         throw new NoClientException();
     }
-    private static Delivery pickDeliveryDriver() throws NoFreeDeliveryDriverException{
+
+    private static void printClientList(){
+        System.out.println("----------CLIENT LIST---------");
+        clients.forEach(System.out::println);
+    }
+    private static Delivery pickDeliveryDriver() throws NoFreeDeliveryDriverException, InvalidMenuOptionException{
         if (deliverers.stream().allMatch(delivery -> !delivery.isAvailable())) {
             throw new NoFreeDeliveryDriverException();
         }
@@ -73,6 +79,7 @@ public class OrderLogic {
         do{
             if(deliverers.get(randomIndex).isAvailable()){
                 free = true;
+                deliverers.get(randomIndex).setDeliveryType(pickDeliveryType());
                 deliverers.get(randomIndex).setAvailable(false);
                 return deliverers.get(randomIndex);
             }
@@ -161,7 +168,7 @@ public class OrderLogic {
         id = Integer.parseInt(sc.nextLine());
 
         o = orders.stream()
-                .filter(order -> order.getID() == id)
+                .filter(order -> order.getIdOrder() == id)
                 .findFirst()
                 .orElse(null);
 

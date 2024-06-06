@@ -41,8 +41,9 @@ public class MainMenuLogic {
                     default:
                         throw new InvalidMenuOptionException();
                 }
-            }catch(InvalidMenuOptionException | NoClientException | NoFreeDeliveryDriverException | NumberFormatException |
-                   EmptyProductListException | OrderIdNotFoundException | NullPointerException e){
+            }catch(InvalidMenuOptionException | NoClientException | NoFreeDeliveryDriverException |
+                   NumberFormatException | EmptyProductListException | OrderIdNotFoundException
+                   | NullPointerException e){
                 System.out.println(e.getMessage());
             }
         }while(!option.equals("5"));

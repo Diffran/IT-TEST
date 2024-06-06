@@ -1,11 +1,15 @@
 package person;
 
+import order.DeliveryType;
+
 public class Delivery extends Person{
     private boolean available;
+    private DeliveryType deliveryType;
 
-    public Delivery(String name) {
+    public Delivery(String name, DeliveryType deliveryType) {
         super(name);
         this.available = true;
+        this.deliveryType = deliveryType;
     }
 
     public boolean isAvailable() {
@@ -18,5 +22,13 @@ public class Delivery extends Person{
     @Override
     public String toString(){
         return "Delivery: "+ name +" Available: "+available;
+    }
+
+    public DeliveryType getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
     }
 }
